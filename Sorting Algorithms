@@ -1,0 +1,153 @@
+/*
+    Author: Manesha Ramesh
+    Description: Some sorting algorithms
+ */
+
+import java.util.*;
+import java.io.*;
+
+public class remainder{
+
+    //Worst case Time-complexity O(nlogn)
+    //space complexity O(N)
+    static int[] mergeSort(int arr[]){
+//        System.out.println(arr.length);
+        if(arr.length ==1){
+            return arr;
+        }
+        int mid = (arr.length+1)/2;
+        int[] s1 = new int[mid];
+        for (int h = 0; h < mid; h++){
+            s1[h] = arr[h];
+//            System.out.print(s1[h]);
+        }
+//        System.out.println();
+        int[] s2 = new int[arr.length - mid];
+        for (int h = mid; h < arr.length; h++){
+            s2[h-mid] = arr[h];
+        }
+        s1 = mergeSort(s1);
+        s2 = mergeSort(s2);
+        int [] newArr = new int[arr.length];
+        int k = 0;
+        int i = 0;
+        int j = 0;
+        while(i < s1.length && j < s2.length){
+            if (s1[i] < s2[j]){
+                newArr[k++] = s1[i++];
+            }
+            else{
+                newArr[k++] = s2[j++];
+            }
+        }
+        while(i < s1.length){
+            newArr[k++] = s1[i++];
+        }
+        while(j < s2.length){
+            newArr[k++] = s2[j++];
+        }
+        return newArr;
+    }
+    static int partition(int [] arr, int low, int high){
+        int pivot = arr[high-1];
+        int i = low;
+        for(int j = low; j < high; j++){
+//            System.out.println(j + " " + arr[j]);
+            if (arr[j] <= pivot){
+                int temp = arr[j];
+                arr[j] = arr[i];
+                arr[i] = temp;
+                i++;
+            }
+        }
+        return i-1;
+    }
+    static int [] quickSort(int [] arr){
+        quickSortRec(arr, 0, arr.length);
+        return arr;
+    }
+    static int[] quickSortRec(int [] arr, int low, int high){
+        if (low >= high){
+            return arr;
+        }
+        int pivot = partition(arr, low, high);
+        quickSortRec(arr, low, pivot-1);
+        quickSortRec(arr, pivot+1, high);
+
+//        System.out.println(pivot);
+        return arr;
+    }
+    //worst case time complexity O(N^2)
+    // Space time complexity O(1)
+    //Best case time complexity - O(N^2)
+    static int[] selectionSort(int arr[]){
+        int swap;
+        for(int i = 0; i < arr.length-1; i++){
+            int min = i;
+            for(int j = i+1; j < arr.length; j++){
+                if(arr[j] < arr[min]){
+                    min = j;
+                }
+            }
+            swap = arr[i];
+            arr[i] = arr[min];
+            arr[min] = swap;
+        }
+        return arr;
+    }
+    //worst case time complexity - O(n^2)
+    //Best case time complexity - O(N)
+    //space time complexity - O(1)
+    static int[] insertionSort(int arr[]){
+
+        for(int i = 1; i < arr.length; i++){
+
+                int temp = arr[i];
+                int j = i-1;
+                while(j >= 0 && temp < arr[j] ){
+                    arr[j+1] = arr[j];
+                    j--;
+                }
+                arr[j+1] = temp;
+
+        }
+        return arr;
+    }
+
+    // Worst time complexity = O(n^2)
+    // Best time complexity  = O(n), with flag, O(n^2) without flag
+    static int[] bubbleSort(int arr[]){
+        int swap = 0;
+        for(int i = 0; i < arr.length; i++){
+            boolean swapped = false;
+            for(int j = 1 ; j < arr.length-i; j++){
+                if (arr[j] < arr[j-1]){
+                    swap = arr[j];
+                    arr[j] = arr[j-1];
+                    arr[j-1] = swap;
+                    swapped = true;
+                }
+            }
+            if (swapped == false)
+                break;
+        }
+        return arr;
+    }
+    public static void main(String args[]) throws IOException {
+        Scanner sc = new Scanner(System.in);
+        int N = sc.nextInt();
+        int [] arr = new int[N];
+        for (int i = 0; i < N; i++){
+            arr[i] = sc.nextInt();
+        }
+//        arr = bubbleSort(arr);
+//        arr = mergeSort(arr);
+//        arr = selectionSort(arr);
+//        arr = insertionSort(arr);
+        arr = quickSort(arr);
+        for (int i = 0; i < N; i++){
+            System.out.print(arr[i] + " ");
+        }
+
+    }
+}
